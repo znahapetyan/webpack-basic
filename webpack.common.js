@@ -4,10 +4,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: './src/index.js',
+        app: './src/index.jsx',
     },
     module: {
         rules: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                },
+            },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
@@ -30,8 +37,12 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Production',
+            template: 'src/index.ejs',
         }),
     ],
+    resolve: {
+        extensions: ['.js', '.json', '.jsx'],
+    },
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
